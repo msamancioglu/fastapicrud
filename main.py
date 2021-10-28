@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, status
+from fastapi import FastAPI, status, HTTPException
 from database import Base, engine, ToDo
 from pydantic import BaseModel
 from sqlalchemy.orm import Session, session
@@ -55,10 +55,31 @@ def read_todo(id: int):
     if todo:
         return f"task is with id {todo.id} is {todo.task}"
     else:
-        return f"no task is with id {id} "
+        raise HTTPException(status_code=404, detail=f"todo item with id {id} not found")
 
 @app.put("/todo/{id}")
-def update_todo(id: int):
+def update_todo(id: int, task:str):
+    print(task)
+     # create a new database session
+    session = Session(bind=engine, expire_on_commit=False)
+
+    # get the todo item with the given id
+    todo = session.query(ToDo).get(id)    
+    
+    if todo:
+        todo.task = task
+        session.commit()     
+    
+    # close the session
+    session.close()
+    
+    if not todo:
+        raise HTTPException(status_code=404, detail=f"todo item with id {id} not found")
+    
+    return todo
+    
+  
+    
     return f"update todo item with id {id}"
 
 @app.delete("/todo/{id}")
@@ -71,10 +92,10 @@ def read_todo_list():
     session = Session(bind=engine, expire_on_commit=False)
     
     # get todo all items
-    todo_list = session.query(ToDo).all() 
-    
+    todo_list = session.query(ToDo).all()
+        
     # dont forget to close the session
-    # better we change with
+    # we better change it "with"
     session.close() 
     
     return todo_list
