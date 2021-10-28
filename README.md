@@ -1,4 +1,4 @@
-# fastapicrud
+# Fast API CRUD Example with SqlAlchemt + Sqlite
 fastapicrud
 
 
