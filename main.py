@@ -1,5 +1,11 @@
+import uvicorn
 from fastapi import FastAPI, status
 from database import Base, engine
+from pydantic import BaseModel
+
+# Create ToDoRequest Base Model
+class ToDoRequest(BaseModel):
+    task: str
 
 # Create the database
 Base.metadata.create_all(engine)
