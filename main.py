@@ -15,7 +15,7 @@ app = FastAPI()
 
 @app.get("/")
 def root():
-    return "welcome to to do app"
+    return "welcome to todo app"
 
 @app.post("/todo", status_code=status.HTTP_201_CREATED)
 def create_todo(todo: ToDoRequest):
