@@ -1,5 +1,5 @@
 
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 import uvicorn
 
 app = FastAPI()
@@ -8,7 +8,7 @@ app = FastAPI()
 def root():
     return "todooo"
 
-@app.post("/todo")
+@app.post("/todo", status_code=status.HTTP_201_CREATED)
 def create_todo():
     return "create todo item"
 
