@@ -67,7 +67,17 @@ def delete_todo(id: int):
 
 @app.get("/todo")
 def read_todo_list():
-    return "read todo list"
+     # create a new database session
+    session = Session(bind=engine, expire_on_commit=False)
+    
+    # get todo all items
+    todo_list = session.query(ToDo).all() 
+    
+    # dont forget to close the session
+    # better we change with
+    session.close() 
+    
+    return todo_list
 
 if __name__ == '__main__':
     uvicorn.run("main:app", reload=True)
