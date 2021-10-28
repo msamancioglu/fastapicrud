@@ -42,15 +42,25 @@ def create_todo(todo: ToDoRequest):
 
 @app.get("/todo/{id}")
 def read_todo(id: int):
-    return "read todo item with id {id}"
+    # create a db session for committing 
+    session = Session(bind=engine, expire_on_commit=False)
+    
+    # get item with id given
+    todo = session.query(ToDo).get(id)
+    
+    # return task info
+    if todo:
+        return f"task is with id {todo.id} is {todo.task}"
+    else:
+        return f"no task is with id {id} "
 
 @app.put("/todo/{id}")
 def update_todo(id: int):
-    return "update todo item with id {id}"
+    return f"update todo item with id {id}"
 
 @app.delete("/todo/{id}")
 def delete_todo(id: int):
-    return "delete todo item with id {id}"
+    return f"delete todo item with id {id}"
 
 @app.get("/todo")
 def read_todo_list():
