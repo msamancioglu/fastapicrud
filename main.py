@@ -78,12 +78,23 @@ def update_todo(id: int, task:str):
     
     return todo
     
-  
-    
-    return f"update todo item with id {id}"
 
-@app.delete("/todo/{id}")
+@app.delete("/todo/{id}", status_code=status.HTTP_200_OK)
 def delete_todo(id: int):
+      # create a new database session
+    session = Session(bind=engine, expire_on_commit=False)
+
+    # get the todo item with the given id
+    todo = session.query(ToDo).get(id)    
+    if todo:
+        session.delete(todo)
+        session.commit()
+        # close the session
+        session.close()
+    else:
+        raise HTTPException(status_code=404, detail=f"todo item with id {id} not found")
+        
+    
     return f"delete todo item with id {id}"
 
 @app.get("/todo")
