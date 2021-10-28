@@ -47,7 +47,10 @@ def read_todo(id: int):
     
     # get item with id given
     todo = session.query(ToDo).get(id)
-    
+       
+    # close the session
+    session.close()    
+  
     # return task info
     if todo:
         return f"task is with id {todo.id} is {todo.task}"
