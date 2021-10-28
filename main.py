@@ -17,7 +17,8 @@ def root():
     return "todooo"
 
 @app.post("/todo", status_code=status.HTTP_201_CREATED)
-def create_todo():
+def create_todo(todo: ToDoRequest):
+    print(todo)
     return "create todo item"
 
 @app.get("/todo/{id}")
