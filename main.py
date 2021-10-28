@@ -53,7 +53,7 @@ def read_todo(id: int):
   
     # return task info
     if todo:
-        return f"task is with id {todo.id} is {todo.task}"
+        return todo
     else:
         raise HTTPException(status_code=404, detail=f"todo item with id {id} not found")
 
